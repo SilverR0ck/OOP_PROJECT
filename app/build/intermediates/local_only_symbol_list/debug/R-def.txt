@@ -1,0 +1,24 @@
+R_DEF: Internal format may change without notice
+local
+color black
+color white
+drawable ic_launcher_background
+drawable ic_launcher_foreground
+id buttonCalculate
+id buttonCalculator
+id buttonCalendar
+id daysWorkedEditText
+id fragmentContainer
+id hourlyRateEditText
+id resultTextView
+layout activity_main
+layout fragment_calculator
+layout fragment_calendar
+mipmap ic_launcher
+mipmap ic_launcher_round
+string app_name
+string hello_blank_fragment
+style Base.Theme.Calendar_Calculator
+style Theme.Calendar_Calculator
+xml backup_rules
+xml data_extraction_rules
