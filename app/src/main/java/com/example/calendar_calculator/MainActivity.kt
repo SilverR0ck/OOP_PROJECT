@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
                 .commit()
         }
 
-
+        //r
 
         val buttonCalculator = findViewById<Button>(R.id.buttonCalendar)
         // "계산기 화면" 버튼 클릭 시 CalculatorFragment로 전환

@@ -34,4 +34,6 @@
         android:layout_height="wrap_content"
         android:text="결과 표시 위치"
         android:textSize="18sp" />
+
+
 </FrameLayout>
