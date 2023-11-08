@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/homeFragment"
+        android:icon="@drawable/baseline_house_24"
+        android:title="근무지" />
+    <item
+        android:id="@+id/calendarFragment"
+        android:icon="@drawable/baseline_calendar_month_24"
+        android:title="캘린더" />
+    <item
+        android:id="@+id/calculatorFragment"
+        android:icon="@drawable/baseline_calculate_24"
+        android:title="급여 계산기" />
+    <item
+        android:id="@+id/statisticsFragment"
+        android:icon="@drawable/baseline_insert_chart_24"
+        android:title="통계" />
+</menu>

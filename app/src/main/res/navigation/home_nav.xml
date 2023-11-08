@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_nav"
+    android:label="근무지"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.op_projectapp.HomeFragment"
+        android:label="근무지"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_addworkFragment"
+            app:destination="@id/addworkFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_calculatorFragment"
+            app:destination="@id/calculatorFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_calendarFragment"
+            app:destination="@id/calendarFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_statisticsFragment"
+            app:destination="@id/statisticsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addworkFragment"
+        android:name="com.example.op_projectapp.AddworkFragment"
+        android:label="근무지 추가"
+        tools:layout="@layout/fragment_addwork">
+        <action
+            android:id="@+id/action_addworkFragment_to_changeworkFragment"
+            app:destination="@id/changeworkFragment" />
+        <action
+            android:id="@+id/action_addworkFragment_to_changeworkFragment2"
+            app:destination="@id/changeworkFragment" />
+        <action
+            android:id="@+id/action_addworkFragment_to_changeworkFragment3"
+            app:destination="@id/changeworkFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/changeworkFragment"
+        android:name="com.example.op_projectapp.ChangeworkFragment"
+        android:label="근무지 수정"
+        tools:layout="@layout/fragment_changework" />
+    <fragment
+        android:id="@+id/calculatorFragment"
+        android:name="com.example.op_projectapp.CalculatorFragment"
+        android:label="급여 계산기"
+        tools:layout="@layout/fragment_calculator" />
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="com.example.op_projectapp.CalendarFragment"
+        android:label="캘린더"
+        tools:layout="@layout/fragment_calendar" />
+    <fragment
+        android:id="@+id/statisticsFragment"
+        android:name="com.example.op_projectapp.StatisticsFragment"
+        android:label="통계"
+        tools:layout="@layout/fragment_statistics" />
+</navigation>
