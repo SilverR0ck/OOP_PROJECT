@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -6,4 +5,111 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    tools:context=".CalculatorFragment"/>
+    tools:context=".CalculatorFragment">
+
+    <EditText
+        android:id="@+id/hourlyWage"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:hint="시급을 입력하세요"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/dailyHours"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="4dp"
+        android:hint="하루 근무시간을 입력하세요"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hourlyWage" />
+
+    <EditText
+        android:id="@+id/weeklyDays"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:hint="일주일 근무일수를 입력하세요"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dailyHours" />
+
+    <Button
+        android:id="@+id/calculateSalaryButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="월급 계산하기"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroupTax" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupRest"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/weeklyDays">
+
+        <RadioButton
+            android:id="@+id/radioButtonInclude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="주휴수당 포함" />
+
+        <RadioButton
+            android:id="@+id/radioButtonExclude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="주휴수당 미포함" />
+    </RadioGroup>
+
+    <RadioGroup
+        android:id="@+id/radioGroupTax"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="100dp"
+        app:layout_constraintStart_toEndOf="@+id/radioGroupRest"
+        app:layout_constraintTop_toBottomOf="@+id/weeklyDays">
+
+        <RadioButton
+            android:id="@+id/radioButtonNoTax"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="세금 적용 안함" />
+
+        <RadioButton
+            android:id="@+id/radioButtonInsurance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="4대보험 적용" />
+
+        <RadioButton
+            android:id="@+id/radioButtonIncomeTax"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="소득세 적용" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/resultText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calculateSalaryButton" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
