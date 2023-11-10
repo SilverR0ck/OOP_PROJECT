@@ -11,7 +11,7 @@
         android:id="@+id/hourlyWage"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
         android:hint="시급을 입력하세요"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -43,73 +43,92 @@
         android:id="@+id/calculateSalaryButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="250dp"
         android:text="월급 계산하기"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroupTax" />
+        app:layout_constraintTop_toBottomOf="@+id/weeklyDays" />
 
-    <RadioGroup
-        android:id="@+id/radioGroupRest"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="12dp"
+    <Button
+        android:id="@+id/restSelectionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="주휴수당 선택"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/weeklyDays">
+        app:layout_constraintTop_toBottomOf="@+id/weeklyDays" />
 
-        <RadioButton
-            android:id="@+id/radioButtonInclude"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="주휴수당 포함" />
+    <Button
+        android:id="@+id/taxSelectionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="세금 선택"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/restSelectionButton" />
 
-        <RadioButton
-            android:id="@+id/radioButtonExclude"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="주휴수당 미포함" />
-    </RadioGroup>
-
-    <RadioGroup
-        android:id="@+id/radioGroupTax"
-        android:layout_width="0dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="100dp"
-        app:layout_constraintStart_toEndOf="@+id/radioGroupRest"
-        app:layout_constraintTop_toBottomOf="@+id/weeklyDays">
-
-        <RadioButton
-            android:id="@+id/radioButtonNoTax"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="세금 적용 안함" />
-
-        <RadioButton
-            android:id="@+id/radioButtonInsurance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="4대보험 적용" />
-
-        <RadioButton
-            android:id="@+id/radioButtonIncomeTax"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="소득세 적용" />
-    </RadioGroup>
 
     <TextView
         android:id="@+id/resultText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="8dp"
         android:textColor="#000000"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/calculateSalaryButton" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="월급은 한달을 4주로 가정하여 계산한 예상 급여 입니다."
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="280dp"
+        android:text="2023년 최저 시급은 9,620원 입니다."
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.613" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="주휴수당은 1주의 근무시간이 15시간 이상일 경우 계산됩니다."
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="계산된 예상 급여는 근로계약 조건에 따라 차이가 있을 수 있습니다."
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="주휴수당은 하루 최대 8시간 일주일 최대 40시간으로 계산됩니다."
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
