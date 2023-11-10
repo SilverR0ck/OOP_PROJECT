@@ -15,6 +15,9 @@ class WorkplaceAdapter(val place: Array<Place>) : RecyclerView.Adapter<Workplace
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
+
+
+
         holder.bind(place[position])
     }
 
