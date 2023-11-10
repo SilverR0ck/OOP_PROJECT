@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = binding.frgNav.getFragment<NavHostFragment>().navController
 
-        return navController.navigateUp() || onSupportNavigateUp()
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
 }

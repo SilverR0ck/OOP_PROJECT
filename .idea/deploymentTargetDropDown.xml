@@ -6,12 +6,22 @@
         <type value="QUICK_BOOT_TARGET" />
         <deviceKey>
           <Key>
+<<<<<<< HEAD
             <type value="VIRTUAL_DEVICE_PATH" />
             <value value="C:\Users\qsdnv\.android\avd\Pixel_4_API_33_5.avd" />
+=======
+            <value value="C:\Users\qsdnv\.android\avd\Pixel_4_API_33_4.avd" />
+>>>>>>> main
           </Key>
         </deviceKey>
       </Target>
     </targetSelectedWithDropDown>
+<<<<<<< HEAD
     <timeTargetWasSelectedWithDropDown value="2023-11-10T03:28:27.153648800Z" />
+=======
+
+    <timeTargetWasSelectedWithDropDown value="2023-11-09T05:10:53.766301600Z" />
+
+>>>>>>> main
   </component>
 </project>
