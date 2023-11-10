@@ -11,6 +11,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.op_projectapp.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
+    val place = arrayOf(
+        Place("스타벅스", 200000),
+        Place("스터디카페", 100000),
+        Place("투썸", 1000000)
+
+    )
 
     var binding: FragmentHomeBinding?= null
     //private lateinit var viewAdapter: RecyclerView.Adapter<*>
@@ -39,7 +45,7 @@ class HomeFragment : Fragment() {
                 layoutManager = LinearLayoutManager(activity)
 
                 // specify an viewAdapter
-                adapter
+                adapter = WorkplaceAdapter(place)
             }
         }
     }
