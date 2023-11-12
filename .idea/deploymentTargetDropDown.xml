@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="deploymentTargetDropDown">
     <targetSelectedWithDropDown>
@@ -7,7 +7,7 @@
         <deviceKey>
           <Key>
             <type value="VIRTUAL_DEVICE_PATH" />
-            <value value="C:\Users\qsdnv\.android\avd\Pixel_4_API_33_7.avd" />
+            <value value="C:\Users\82106\.android\avd\Pixel_4_API_32_3.avd" />
           </Key>
         </deviceKey>
       </Target>
