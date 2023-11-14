@@ -7,7 +7,7 @@ import com.example.op_projectapp.repository.PlaceRepository
 
 data class Place(
     val name: String = "",
-    val salary: Int = 0
+    val salary: String = "0"
 )
 
 class PlaceViewModel : ViewModel() {
