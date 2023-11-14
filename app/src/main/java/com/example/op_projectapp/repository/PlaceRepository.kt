@@ -11,9 +11,9 @@ import com.google.firebase.ktx.Firebase
 
 class PlaceRepository {
     // 파이어베이스에서 데이터베이스 인스턴스
-    val database = Firebase.database
+    private val database = Firebase.database
     // places 노드에 대한 참조
-    val WorkRef = database.getReference("places")
+    private val WorkRef = database.getReference("places")
 
     // places 노드의 데이터 변화를 옵저브하는 메소드
     fun observePlaces(places: MutableLiveData<List<Place>>) {

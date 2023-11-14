@@ -26,7 +26,7 @@
     </fragment>
     <fragment
         android:id="@+id/addworkFragment"
-        android:name="com.example.op_projectapp.AddworkFragment"
+        android:name="com.example.op_projectapp.AddWorkFragment"
         android:label="근무지 추가"
         tools:layout="@layout/fragment_addwork">
         <action

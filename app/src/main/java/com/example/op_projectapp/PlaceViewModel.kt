@@ -14,7 +14,7 @@ class PlaceViewModel : ViewModel() {
     private val _nameplace = MutableLiveData<List<Place>>()
     val nameplace: LiveData<List<Place>> get() = _nameplace
 
-    private val repository = PlaceRepository() // PlaceRepository는 당신이 정의
+    private val repository = PlaceRepository()
 
     init {
         repository.observePlaces(_nameplace)
