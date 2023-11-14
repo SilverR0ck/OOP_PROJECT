@@ -10,7 +10,7 @@ import android.widget.EditText
 import androidx.fragment.app.viewModels
 
 
-class AddWorkFragment : Fragment() {
+class AddworkFragment : Fragment() {
 
     //viewModel 객체 생성
     private val viewModel: PlaceViewModel by viewModels()
@@ -42,5 +42,4 @@ class AddWorkFragment : Fragment() {
         // Inflate the layout for this fragment
         return view
     }
-
 }
