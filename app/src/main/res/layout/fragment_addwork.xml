@@ -14,6 +14,7 @@
         android:layout_height="42dp"
         android:layout_marginTop="47dp"
         android:hint=" "
+        android:textAlignment="center"
         android:textColor="#000000"
         app:layout_constraintStart_toEndOf="@+id/textView14"
         app:layout_constraintTop_toBottomOf="@+id/textView11" />
@@ -165,6 +166,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="6dp"
         android:hint=" "
+        android:textAlignment="center"
         android:textColor="#000000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView10" />
@@ -176,6 +178,7 @@
         android:layout_marginStart="4dp"
         android:layout_marginBottom="-6dp"
         android:hint=" "
+        android:textAlignment="center"
         android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="@+id/textView20"
         app:layout_constraintStart_toEndOf="@+id/textView20" />
@@ -186,6 +189,7 @@
         android:layout_height="44dp"
         android:layout_marginStart="4dp"
         android:hint=" "
+        android:textAlignment="center"
         android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="@+id/workstarttime"
         app:layout_constraintStart_toEndOf="@+id/textView21" />
@@ -234,6 +238,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="15dp"
         android:orientation="horizontal"
+        android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView16">
 
@@ -315,4 +320,13 @@
         app:layout_constraintBottom_toBottomOf="@+id/saturday"
         app:layout_constraintStart_toEndOf="@+id/saturday" />
 
+    <Button
+        android:id="@+id/registerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:text="등록"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
