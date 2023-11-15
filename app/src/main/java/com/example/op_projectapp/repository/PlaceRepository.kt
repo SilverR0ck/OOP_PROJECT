@@ -12,6 +12,7 @@ import com.google.firebase.ktx.Firebase
 class PlaceRepository {
     // 파이어베이스에서 데이터베이스 인스턴스
     val database = Firebase.database
+
     // places 노드에 대한 참조
     val WorkRef = database.getReference("places")
 
@@ -37,6 +38,24 @@ class PlaceRepository {
     }
 
     fun postPlaces(placeList: List<Place>) {
-        WorkRef.setValue(placeList)
+        WorkRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val existingIds = mutableListOf<String>()
+                for (placeSnapshot in snapshot.children) {
+                    val place = placeSnapshot.getValue(Place::class.java)
+                    place?.id?.let { existingIds.add(it) }
+                }
+
+                for (place in placeList) {
+                    if (place.id !in existingIds) {
+                        WorkRef.child(place.id).setValue(place)
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("PlaceRepository", "Failed to load places", error.toException())
+            }
+        })
     }
 }
