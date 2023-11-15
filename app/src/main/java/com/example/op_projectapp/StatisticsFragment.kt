@@ -1,59 +1,56 @@
 package com.example.op_projectapp
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [StatisticsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class StatisticsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_statistics, container, false)
-    }
+        val view = inflater.inflate(R.layout.fragment_statistics, container, false)
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment StatisticsFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            StatisticsFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        // Get the BarChart view from the layout
+        val barChart: BarChart = view.findViewById(R.id.statisticsBarChart)
+
+        // Create dummy data for the bar chart
+        val entries = listOf(
+            BarEntry(1f, 60f, "7월"),
+            BarEntry(2f, 70f, "8월"),
+            BarEntry(3f, 30f, "9월"),
+            BarEntry(4f, 15f, "10월"),
+            BarEntry(5f, 100f, "11월")
+        )
+
+        // Create a BarDataSet with the dummy data
+        val dataSet = BarDataSet(entries, "최근 5개월 간 소득 추이")
+        dataSet.color = Color. BLACK
+
+        // Create a BarData object with the BarDataSet
+        val barData = BarData(dataSet)
+
+        // Customize the X-axis
+        val xAxis: XAxis = barChart.xAxis
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.setDrawGridLines(false)
+
+        // Set the bar chart data
+        barChart.data = barData
+
+        // Refresh the chart
+        barChart.invalidate()
+
+        return view
     }
 }
