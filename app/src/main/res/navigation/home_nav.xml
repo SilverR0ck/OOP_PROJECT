@@ -23,22 +23,15 @@
         <action
             android:id="@+id/action_homeFragment_to_statisticsFragment"
             app:destination="@id/statisticsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_changeworkFragment"
+            app:destination="@id/changeworkFragment" />
     </fragment>
     <fragment
         android:id="@+id/addworkFragment"
         android:name="com.example.op_projectapp.AddworkFragment"
         android:label="근무지 추가"
-        tools:layout="@layout/fragment_addwork">
-        <action
-            android:id="@+id/action_addworkFragment_to_changeworkFragment"
-            app:destination="@id/changeworkFragment" />
-        <action
-            android:id="@+id/action_addworkFragment_to_changeworkFragment2"
-            app:destination="@id/changeworkFragment" />
-        <action
-            android:id="@+id/action_addworkFragment_to_changeworkFragment3"
-            app:destination="@id/changeworkFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_addwork"/>
     <fragment
         android:id="@+id/changeworkFragment"
         android:name="com.example.op_projectapp.ChangeworkFragment"
