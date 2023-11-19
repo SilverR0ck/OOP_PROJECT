@@ -1,6 +1,7 @@
 package com.example.op_projectapp
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,121 +15,129 @@ import androidx.fragment.app.viewModels
 
 class AddworkFragment : Fragment() {
 
-    //viewModel 객체 생성
+    // viewModel PlaceViewModel 인스턴스 생성
     private val viewModel: PlaceViewModel by viewModels()
 
+    // AddworkFragment의 뷰를 생성 및 초기화
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_addwork, container, false)
-        val work_placenameEditText = view.findViewById<EditText>(R.id.workplacename)
-        val wageday_EditText = view.findViewById<EditText>(R.id.wageday)
-        val wageamount_EditText = view.findViewById<EditText>(R.id.wageamount)
-        val workstarttime_EditText = view.findViewById<EditText>(R.id.workstarttime)
-        val workendtime_EditText = view.findViewById<EditText>(R.id.workendtime)
-        val register_Button = view.findViewById<Button>(R.id.registerButton)
-        val restSelectionButton = view.findViewById<Button>(R.id.restSelectionButton)
-        val taxSelectionButton = view.findViewById<Button>(R.id.taxSelectionButton)
+        // AddWork뷰 inflate하고 뷰 관련 설정
+        return inflater.inflate(R.layout.fragment_addwork, container, false).apply {
+            val work_placenameEditText = findViewById<EditText>(R.id.workplacename) //알바 이름
+            val wageday_EditText = findViewById<EditText>(R.id.wageday) // 월급 받는 날
+            val wageamount_EditText = findViewById<EditText>(R.id.wageamount) // 시급
+            val workstarttime_EditText = findViewById<EditText>(R.id.workstarttime) // 알바 출근 시각
+            val workendtime_EditText = findViewById<EditText>(R.id.workendtime) // 알바 퇴근 시각
+            val register_Button = findViewById<Button>(R.id.registerButton) // 등록
+            val restSelectionButton = findViewById<Button>(R.id.restSelectionButton) // 주휴 수당
+            val taxSelectionButton = findViewById<Button>(R.id.taxSelectionButton) // 세금 선택
 
-        restSelectionButton.setOnClickListener {
-            val restOptions = arrayOf("주휴수당 포함", "주휴수당 미포함")
-            val builder = AlertDialog.Builder(it.context)
-            builder.setTitle("주휴수당 선택")
-            builder.setItems(restOptions) { dialog, which ->
-                restSelectionButton.text = restOptions[which]
-            }
-            val dialog = builder.create()
-            dialog.show()
-        }
-
-        taxSelectionButton.setOnClickListener {
-            val taxOptions = arrayOf("세금 적용 안함", "4대보험 적용 (9.32%)", "소득세 적용 (3.3%)")
-            val builder = AlertDialog.Builder(it.context)
-            builder.setTitle("세금 선택")
-            builder.setItems(taxOptions) { dialog, which ->
-                taxSelectionButton.text = taxOptions[which]
-            }
-            val dialog = builder.create()
-            dialog.show()
-        }
-
-
-        register_Button.setOnClickListener {
-            val workPlaceName = work_placenameEditText.text.toString() //알바장소
-            val wageDay = wageday_EditText.text.toString() //월급받는 날짜
-            val wageAmount = wageamount_EditText.text.toString() // 시급
-            val workStartTime = workstarttime_EditText.text.toString() // 알바 시작 시간
-            val workEndTime = workendtime_EditText.text.toString() // 알바 종료 시간
-            // 체크 박스 개수에 따라 주 며칠 일하는지 카운트
-            val mondayCheckBox = view.findViewById<CheckBox>(R.id.monday)
-            val tuesdayCheckBox = view.findViewById<CheckBox>(R.id.tuesday)
-            val wednesdayCheckBox = view.findViewById<CheckBox>(R.id.wednesday)
-            val thursdayCheckBox = view.findViewById<CheckBox>(R.id.thursday)
-            val fridayCheckBox = view.findViewById<CheckBox>(R.id.friday)
-            val saturdayCheckBox = view.findViewById<CheckBox>(R.id.saturday)
-            val sundayCheckBox = view.findViewById<CheckBox>(R.id.sunday)
-
-            val dayCount = listOf(
-                mondayCheckBox,
-                tuesdayCheckBox,
-                wednesdayCheckBox,
-                thursdayCheckBox,
-                fridayCheckBox,
-                saturdayCheckBox,
-                sundayCheckBox).count { it.isChecked } //주 며칠 출근 카운트
-
-            val dayCalendarCheck = listOf(
-                mondayCheckBox,
-                tuesdayCheckBox,
-                wednesdayCheckBox,
-                thursdayCheckBox,
-                fridayCheckBox,
-                saturdayCheckBox,
-                sundayCheckBox)
-            val dayCalendarBoolList = dayCalendarCheck.map { if (it.isChecked) 1 else 0 }
-
-
-            // 등록버튼 이벤트발생 시 위의 데이터에 따라 월급 계산
-            var total_salary = 0.0
-            val wage = wageAmount.toInt()
-            val hours = workEndTime.toInt() - workStartTime.toInt()
-            val days = dayCount // 일주일에 며칠 일하는지, 체크박스 개수
-
-            if (wage != null && hours != null && days != null) {
-                val rest: Double
-                val tax: Double
-
-                when (restSelectionButton.text) {
-                    "주휴수당 포함" -> {
-                        rest =
-                            if (hours * days >= 15) (hours.coerceAtMost(8) * days.coerceAtMost(5) * wage).toDouble() else 0.0
-                    }
-
-                    else -> rest = 0.0
-                }
-
-                when (taxSelectionButton.text) {
-                    "4대보험 적용 (9.32%)" -> tax = 0.0932
-                    "소득세 적용 (3.3%)" -> tax = 0.033
-                    else -> tax = 0.0
-                }
-                val monthlySalary = wage * hours * days * 4
-                val taxAmount = (monthlySalary + rest) * tax
-                total_salary = monthlySalary + rest - taxAmount //최종 예상 수령 금액
-            }
-            val place = Place(
-                name = workPlaceName,
-                wageday = wageDay,
-                wageamount = wageAmount,
-                starttime = workStartTime,
-                endtime = workEndTime,
-                daycount = dayCount,
-                salary = total_salary.toInt(),
-                dayCalendarCheck = dayCalendarBoolList
+            // 알바 출근 요일 선택 체크 박스, 주 며칠 출근하는 지 카운트
+            val checkBoxes = listOf(
+                findViewById<CheckBox>(R.id.monday),
+                findViewById<CheckBox>(R.id.tuesday),
+                findViewById<CheckBox>(R.id.wednesday),
+                findViewById<CheckBox>(R.id.thursday),
+                findViewById<CheckBox>(R.id.friday),
+                findViewById<CheckBox>(R.id.saturday),
+                findViewById<CheckBox>(R.id.sunday)
             )
-            viewModel.addPlace(place)
+
+            // 버튼 이벤트
+            restSelectionButton.setOnClickListener { it.context.showRestDialog(restSelectionButton) } // 주휴 수당
+            taxSelectionButton.setOnClickListener { it.context.showTaxDialog(taxSelectionButton) } // 세금 선택
+
+            // 등록 버튼 클릭 시 Place 객체 생성하고, viewModel을 통해 데이터 추가
+            register_Button.setOnClickListener {
+                val place = createPlace(
+                    work_placenameEditText,
+                    wageday_EditText,
+                    wageamount_EditText,
+                    workstarttime_EditText,
+                    workendtime_EditText,
+                    checkBoxes,
+                    restSelectionButton,
+                    taxSelectionButton
+                )
+                viewModel.addPlace(place)
+            }
         }
-        return view
+    }
+
+    // 주휴수당 선택에 화면을 생성하고 보여주는 함수
+    private fun Context.showRestDialog(button: Button) = AlertDialog.Builder(this).run {
+        setTitle("주휴수당 선택")
+        setItems(arrayOf("주휴수당 포함", "주휴수당 미포함")) { _, which ->
+            button.text = if (which == 0) "주휴수당 포함" else "주휴수당 미포함"
+        }
+        create().show()
+    }
+
+    // 세금 선택에 대한 화면을 생성하고 보여주는 함수
+    private fun Context.showTaxDialog(button: Button) = AlertDialog.Builder(this).run {
+        setTitle("세금 선택")
+        setItems(arrayOf("세금 적용 안함", "4대보험 적용 (9.32%)", "소득세 적용 (3.3%)")) { _, which ->
+            button.text = when (which) {
+                0 -> "세금 적용 안함"
+                1 -> "4대보험 적용 (9.32%)"
+                else -> "소득세 적용 (3.3%)"
+            }
+        }
+        create().show()
+    }
+
+
+    private fun View.createPlace(
+        placenameEditText: EditText,
+        wagedayEditText: EditText,
+        wageamountEditText: EditText,
+        starttimeEditText: EditText,
+        endtimeEditText: EditText,
+        checkBoxes: List<CheckBox>,
+        restButton: Button,
+        taxButton: Button
+    ): Place {
+        val workPlaceName = placenameEditText.text.toString()
+        val wageDay = wagedayEditText.text.toString()
+        val wageAmount = wageamountEditText.text.toString()
+        val workStartTime = starttimeEditText.text.toString()
+        val workEndTime = endtimeEditText.text.toString()
+        val dayCount = checkBoxes.count { it.isChecked }
+        val dayCalendarBoolList = checkBoxes.map { if (it.isChecked) 1 else 0 }
+
+        val salary = calculateSalary(
+            wageAmount.toInt(),
+            workEndTime.toInt() - workStartTime.toInt(),
+            dayCount,
+            restButton.text.toString(),
+            taxButton.text.toString()
+        )
+
+        return Place(
+            name = workPlaceName,
+            wageday = wageDay,
+            wageamount = wageAmount,
+            starttime = workStartTime,
+            endtime = workEndTime,
+            daycount = dayCount,
+            salary = salary,
+            dayCalendarCheck = dayCalendarBoolList
+        )
+    }
+
+    private fun calculateSalary(wage: Int, hours: Int, days: Int, rest: String, tax: String): Int {
+        val monthlySalary = wage * hours * days * 4
+        val restAmount = if (rest == "주휴수당 포함" && hours * days >= 15) {
+            (hours.coerceAtMost(8) * days.coerceAtMost(5) * wage).toDouble()
+        } else 0.0
+        val taxRate = when (tax) {
+            "4대보험 적용 (9.32%)" -> 0.0932
+            "소득세 적용 (3.3%)" -> 0.033
+            else -> 0.0
+        }
+        val taxAmount = (monthlySalary + restAmount) * taxRate
+        return (monthlySalary + restAmount - taxAmount).toInt()
     }
 }
