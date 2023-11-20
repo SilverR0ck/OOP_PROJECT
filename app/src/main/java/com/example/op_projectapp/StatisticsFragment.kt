@@ -35,11 +35,8 @@ class StatisticsFragment : Fragment() {
 
         // Create a BarDataSet with the dummy data
         val dataSet = BarDataSet(entries, "최근 5개월 간 소득 추이")
-<<<<<<< HEAD
         dataSet.color = Color. BLACK
-=======
-        dataSet.color = Color. BLUE
->>>>>>> 983bca29af823080430b0e71da305f1fd63b3600
+
 
         // Create a BarData object with the BarDataSet
         val barData = BarData(dataSet)
