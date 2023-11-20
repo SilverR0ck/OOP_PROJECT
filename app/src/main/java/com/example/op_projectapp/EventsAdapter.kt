@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
@@ -33,9 +34,9 @@ class EventsAdapter (private val worklist: LiveData<List<Place>>): RecyclerView.
     }
 
     inner class EventViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        val eventName = itemView.findViewById<EditText>(R.id.txt_eventName) //일정 이름
-        val eventStart = itemView.findViewById<EditText>(R.id.txt_eventStart) //일정 시작 시간
-        val eventEnd = itemView.findViewById<EditText>(R.id.txt_eventEnd) //일정 종료 시간
+        val eventName: TextView  = itemView.findViewById(R.id.txt_eventName) //일정 이름
+        val eventStart: TextView = itemView.findViewById(R.id.txt_eventStart) //일정 시작 시간
+        val eventEnd: TextView = itemView.findViewById(R.id.txt_eventEnd) //일정 종료 시간
     }
 
 }
