@@ -22,7 +22,6 @@
         android:id="@+id/dailyHours"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_marginTop="4dp"
         android:hint="하루 근무시간을 입력하세요"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
