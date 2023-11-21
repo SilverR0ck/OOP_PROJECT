@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.op_projectapp.Place
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -29,7 +30,7 @@ class PlaceRepository {
                 places.postValue(placeList) //변환된 Place 객체의 리스트를 라이브데이터에 전달
             }
 
-            // 데이터 변화를 가져오는데 실패했을 때 호출되는 메소드입니다.
+            // 데이터 변화를 가져오는데 실패했을 때 호출되는 메소드
             override fun onCancelled(error: DatabaseError) {
                 // 오류 메시지를 로그에 출력합니다.
                 Log.e("PlaceRepository", "Failed to load places", error.toException())
@@ -43,19 +44,31 @@ class PlaceRepository {
                 val existingIds = mutableListOf<String>()
                 for (placeSnapshot in snapshot.children) {
                     val place = placeSnapshot.getValue(Place::class.java)
-                    place?.id?.let { existingIds.add(it) }
+                    place?.name?.let { existingIds.add(it) }
                 }
 
                 for (place in placeList) {
-                    if (place.id !in existingIds) {
-                        WorkRef.child(place.id).setValue(place)
+                    if (place.name !in existingIds) {
+                        WorkRef.child(place.name).setValue(place)
                     }
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.e("PlaceRepository", "Failed to load places", error.toException())
+                Log.e("PlaceRepository", "Failed to load places", error.toException()) //예외처리
             }
         })
     }
+
+    fun updatePlace(place: Place) {
+        if (place.name.isNotEmpty()) {
+            WorkRef.child(place.name).setValue(place)
+        }
+    }
+
+    fun deletePlace(key: String) {
+        Log.d("PlaceRepository", "Deleting place with key: $key")
+        WorkRef.child(key).removeValue()
+    }
+
 }

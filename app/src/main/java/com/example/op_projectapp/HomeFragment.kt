@@ -45,11 +45,6 @@ class HomeFragment : Fragment() {
                 findNavController().navigate(R.id.action_homeFragment_to_addworkFragment)
             }
         }
-        binding?.run {
-            btnAddwork.setOnClickListener {
-                findNavController().navigate(R.id.action_homeFragment_to_addworkFragment)
-            }
-        }
     }
 
 

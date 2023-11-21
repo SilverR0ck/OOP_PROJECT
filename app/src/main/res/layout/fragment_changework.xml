@@ -32,14 +32,14 @@
         android:textAllCaps="false"
         android:textColor="#000000"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/wageamount"
+        app:layout_constraintBottom_toBottomOf="@+id/hourlyrate"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/wageamount"
+        android:id="@+id/hourlyrate"
         android:layout_width="100dp"
         android:layout_height="42dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="44dp"
         android:hint=" "
         android:textAlignment="center"
         android:textColor="#000000"
@@ -105,8 +105,8 @@
         android:textAllCaps="false"
         android:textColor="#000000"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/wageamount"
-        app:layout_constraintStart_toEndOf="@+id/wageamount" />
+        app:layout_constraintBottom_toBottomOf="@+id/hourlyrate"
+        app:layout_constraintStart_toEndOf="@+id/hourlyrate" />
 
     <EditText
         android:id="@+id/workplacename"
@@ -316,13 +316,13 @@
         app:layout_constraintBottom_toBottomOf="@+id/saturday"
         app:layout_constraintStart_toEndOf="@+id/saturday" />
 
-<Button
-    android:id="@+id/registerButton"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="15dp"
-    android:text="수정"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent" />
+    <Button
+        android:id="@+id/updateButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:text="수정"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
