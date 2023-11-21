@@ -34,19 +34,21 @@
         android:textAllCaps="false"
         android:textColor="#000000"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/wageamount"
+        app:layout_constraintBottom_toBottomOf="@+id/hourlyrate"
         app:layout_constraintStart_toStartOf="parent" />
 
+
     <EditText
-        android:id="@+id/wageamount"
+        android:id="@+id/hourlyrate"
         android:layout_width="100dp"
         android:layout_height="42dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="44dp"
         android:hint=" "
         android:textAlignment="center"
         android:textColor="#000000"
         app:layout_constraintStart_toEndOf="@+id/textView14"
         app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
 
     <EditText
         android:id="@+id/wageday"
@@ -107,8 +109,8 @@
         android:textAllCaps="false"
         android:textColor="#000000"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/wageamount"
-        app:layout_constraintStart_toEndOf="@+id/wageamount" />
+        app:layout_constraintBottom_toBottomOf="@+id/hourlyrate"
+        app:layout_constraintStart_toEndOf="@+id/hourlyrate" />
 
     <EditText
         android:id="@+id/workplacename"

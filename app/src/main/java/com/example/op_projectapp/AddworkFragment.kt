@@ -3,6 +3,7 @@ package com.example.op_projectapp
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,13 +12,14 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import androidx.fragment.app.viewModels
+import com.google.firebase.database.FirebaseDatabase
 
 
 class AddworkFragment : Fragment() {
 
     // viewModel PlaceViewModel 인스턴스 생성
     private val viewModel: PlaceViewModel by viewModels()
-
+    val database = FirebaseDatabase.getInstance().reference
     // AddworkFragment의 뷰를 생성 및 초기화
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,7 +29,7 @@ class AddworkFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_addwork, container, false).apply {
             val work_placenameEditText = findViewById<EditText>(R.id.workplacename) //알바 이름
             val wageday_EditText = findViewById<EditText>(R.id.wageday) // 월급 받는 날
-            val wageamount_EditText = findViewById<EditText>(R.id.wageamount) // 시급
+            val hourlyrate_EditText = findViewById<EditText>(R.id.hourlyrate) // 시급
             val workstarttime_EditText = findViewById<EditText>(R.id.workstarttime) // 알바 출근 시각
             val workendtime_EditText = findViewById<EditText>(R.id.workendtime) // 알바 퇴근 시각
             val register_Button = findViewById<Button>(R.id.registerButton) // 등록
@@ -54,7 +56,7 @@ class AddworkFragment : Fragment() {
                 val place = createPlace(
                     work_placenameEditText,
                     wageday_EditText,
-                    wageamount_EditText,
+                    hourlyrate_EditText,
                     workstarttime_EditText,
                     workendtime_EditText,
                     checkBoxes,
@@ -90,35 +92,36 @@ class AddworkFragment : Fragment() {
 
 
     private fun View.createPlace(
+
         placenameEditText: EditText,
         wagedayEditText: EditText,
-        wageamountEditText: EditText,
+        hourlyrateEditText: EditText,
         starttimeEditText: EditText,
         endtimeEditText: EditText,
         checkBoxes: List<CheckBox>,
         restButton: Button,
         taxButton: Button
     ): Place {
+        //val Uuid: String = UUID.randomUUID().toString()
         val workPlaceName = placenameEditText.text.toString()
         val wageDay = wagedayEditText.text.toString()
-        val wageAmount = wageamountEditText.text.toString()
+        val hourlyRate = hourlyrateEditText.text.toString()
         val workStartTime = starttimeEditText.text.toString()
         val workEndTime = endtimeEditText.text.toString()
         val dayCount = checkBoxes.count { it.isChecked }
         val dayCalendarBoolList = checkBoxes.map { if (it.isChecked) 1 else 0 }
 
         val salary = calculateSalary(
-            wageAmount.toInt(),
+            hourlyRate.toInt(),
             workEndTime.toInt() - workStartTime.toInt(),
             dayCount,
             restButton.text.toString(),
             taxButton.text.toString()
         )
-
         return Place(
             name = workPlaceName,
             wageday = wageDay,
-            wageamount = wageAmount,
+            hourlyrate = hourlyRate,
             starttime = workStartTime,
             endtime = workEndTime,
             daycount = dayCount,
