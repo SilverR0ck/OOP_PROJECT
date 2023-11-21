@@ -204,7 +204,6 @@
         android:layout_height="44dp"
         android:layout_marginStart="4dp"
         android:layout_marginBottom="-6dp"
-        android:hint=" "
         android:textAlignment="center"
         android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="@+id/textView20"
@@ -325,4 +324,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="25dp"
+        android:text="※ 24시간 기준"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView22" />
 </androidx.constraintlayout.widget.ConstraintLayout>
