@@ -14,7 +14,7 @@ data class Place(
     val endtime: String = "24",
     val salary: Int? = 0,
     val daycount: Int = 0,
-    val hourlyrate: String = "1",
+    val hourlyrate: String = "9680",
     val dayCalendarCheck: List<Int> = mutableListOf(),
 )
 

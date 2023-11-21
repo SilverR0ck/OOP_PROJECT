@@ -47,7 +47,7 @@ class AddworkFragment : Fragment() {
                 findViewById<CheckBox>(R.id.sunday)
             )
 
-            // 버튼 이벤트
+            // AlertDialog 버튼 이벤트
             restSelectionButton.setOnClickListener { it.context.showRestDialog(restSelectionButton) } // 주휴 수당
             taxSelectionButton.setOnClickListener { it.context.showTaxDialog(taxSelectionButton) } // 세금 선택
 
@@ -68,7 +68,7 @@ class AddworkFragment : Fragment() {
         }
     }
 
-    // 주휴수당 선택에 화면을 생성하고 보여주는 함수
+    // 주휴수당 선택에 화면을 생성 함수
     private fun Context.showRestDialog(button: Button) = AlertDialog.Builder(this).run {
         setTitle("주휴수당 선택")
         setItems(arrayOf("주휴수당 포함", "주휴수당 미포함")) { _, which ->
@@ -77,7 +77,7 @@ class AddworkFragment : Fragment() {
         create().show()
     }
 
-    // 세금 선택에 대한 화면을 생성하고 보여주는 함수
+    // 세금 선택에 대한 화면을 생성 함수
     private fun Context.showTaxDialog(button: Button) = AlertDialog.Builder(this).run {
         setTitle("세금 선택")
         setItems(arrayOf("세금 적용 안함", "4대보험 적용 (9.32%)", "소득세 적용 (3.3%)")) { _, which ->
@@ -91,8 +91,8 @@ class AddworkFragment : Fragment() {
     }
 
 
+    // 사용자로부터 데이터를 입력받고 이를 바탕으로 Place 객체를 생성하는 함수
     private fun View.createPlace(
-
         placenameEditText: EditText,
         wagedayEditText: EditText,
         hourlyrateEditText: EditText,
@@ -102,7 +102,6 @@ class AddworkFragment : Fragment() {
         restButton: Button,
         taxButton: Button
     ): Place {
-        //val Uuid: String = UUID.randomUUID().toString()
         val workPlaceName = placenameEditText.text.toString()
         val wageDay = wagedayEditText.text.toString()
         val hourlyRate = hourlyrateEditText.text.toString()
@@ -110,18 +109,18 @@ class AddworkFragment : Fragment() {
         val workEndTime = endtimeEditText.text.toString()
         val dayCount = checkBoxes.count { it.isChecked }
         val dayCalendarBoolList = checkBoxes.map { if (it.isChecked) 1 else 0 }
-
         val salary = calculateSalary(
-            hourlyRate.toInt(),
+            hourlyRate,
             workEndTime.toInt() - workStartTime.toInt(),
             dayCount,
             restButton.text.toString(),
             taxButton.text.toString()
         )
+        // 생성된 데이터를 바탕으로 Place 객체를 생성해서 반환
         return Place(
             name = workPlaceName,
             wageday = wageDay,
-            hourlyrate = hourlyRate,
+            hourlyrate = hourlyRate.toString(),
             starttime = workStartTime,
             endtime = workEndTime,
             daycount = dayCount,
@@ -130,7 +129,9 @@ class AddworkFragment : Fragment() {
         )
     }
 
-    private fun calculateSalary(wage: Int, hours: Int, days: Int, rest: String, tax: String): Int {
+    // 월급 계산 함수
+    fun calculateSalary(wage: String, hours: Int, days: Int, rest: String, tax: String): Int {
+        val wage = wage.toInt()
         val monthlySalary = wage * hours * days * 4
         val restAmount = if (rest == "주휴수당 포함" && hours * days >= 15) {
             (hours.coerceAtMost(8) * days.coerceAtMost(5) * wage).toDouble()

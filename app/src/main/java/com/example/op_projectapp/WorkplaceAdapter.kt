@@ -27,6 +27,7 @@ class WorkplaceAdapter(private val placeList: LiveData<List<Place>>) : RecyclerV
             val bundle = Bundle()
             bundle.putString("name", place?.name)
             bundle.putString("wageday", place?.wageday)
+            bundle.putString("hourlyrate", place?.hourlyrate)
             bundle.putInt("salary", place?.salary ?: 0)
             bundle.putInt("daycount", place?.daycount ?: 0)
             bundle.putIntArray("dayCalendarCheck", place?.dayCalendarCheck?.toIntArray() ?: IntArray(7))
