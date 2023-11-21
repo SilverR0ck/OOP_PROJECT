@@ -35,7 +35,7 @@ class ChangeworkFragment : Fragment() {
             dayCalendarCheck = it.getIntArray("dayCalendarCheck")?.toList() ?: mutableListOf()
             starttime = it.getString("starttime")
             endtime = it.getString("endtime")
-            hourlyrate = it.getString("hourlyrate")
+            hourlyrate = it.getString("hourlyrate").toString()
         }
         Log.d("wageamountvaule", "Deleting place with key: $hourlyrate")
     }
@@ -85,11 +85,8 @@ class ChangeworkFragment : Fragment() {
         view.findViewById<CheckBox>(R.id.thursday).isChecked = dayCalendarCheck[3] != 0
         view.findViewById<CheckBox>(R.id.friday).isChecked = dayCalendarCheck[4] != 0
         view.findViewById<CheckBox>(R.id.saturday).isChecked = dayCalendarCheck[5] != 0
-        view.findViewById<CheckBox>(R.id.sunday).isChecked = dayCalendarCheck[6] != 0
-
-        // '수정' 버튼 클릭 이벤트
         updateButton.setOnClickListener {
-           // val newKey = database.push().key
+            // val newKey = database.push().key
             val newName = view.findViewById<EditText>(R.id.workplacename).text.toString()
             val newWageday = view.findViewById<EditText>(R.id.wageday).text.toString()
             val newStarttime = view.findViewById<EditText>(R.id.workstarttime).text.toString()
@@ -100,6 +97,9 @@ class ChangeworkFragment : Fragment() {
             val newRestSelectionButton = view.findViewById<Button>(R.id.restSelectionButton)
             val newTaxSelectionButton = view.findViewById<Button>(R.id.taxSelectionButton)
 
+            view.findViewById<CheckBox>(R.id.sunday).isChecked = dayCalendarCheck[6] != 0
+
+        // '수정' 버튼 클릭 이벤트
             val newDayCalendarCheck = listOf<Int>(
                 if (view.findViewById<CheckBox>(R.id.monday).isChecked) 1 else 0,
                 if (view.findViewById<CheckBox>(R.id.tuesday).isChecked) 1 else 0,
