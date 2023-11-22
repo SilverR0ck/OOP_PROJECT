@@ -52,7 +52,7 @@ class PlaceRepository {
                 for (place in placeList) {
                     // 만일 Place 객체의 name이 existingIds 리스트에 없으면, places 노드에 추가
                     if (place.name !in existingIds) {
-                        WorkRef.child(place.name).setValue(place)
+                        WorkRef.child(place.name?:" ").setValue(place)
                     }
                 }
             }
@@ -65,8 +65,8 @@ class PlaceRepository {
 
     // place 객체를 업데이트 하는 함수
     fun updatePlace(place: Place) {
-        if (place.name.isNotEmpty()) {
-            WorkRef.child(place.name).setValue(place)
+        if (place.name!!.isNotEmpty()) {
+            WorkRef.child(place.name?:" ").setValue(place)
         }
     }
 
