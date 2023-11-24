@@ -8,14 +8,14 @@ import com.google.firebase.database.FirebaseDatabase
 import java.util.UUID
 
 data class Place(
-    val name: String = " ",
-    val wageday: String = "1",
-    val starttime: String = "0",
-    val endtime: String = "24",
+    val name: String? = " ",
+    val wageday: String? = "1",
+    val starttime: String? = "0",
+    val endtime: String? = "24",
     val salary: Int? = 0,
-    val daycount: Int = 0,
-    val hourlyrate: String = "9680",
-    val dayCalendarCheck: List<Int> = mutableListOf(),
+    val daycount: Int? = 0,
+    val hourlyrate: String? = "9680",
+    val dayCalendarCheck: List<Int> ?= mutableListOf(),
 )
 
 class PlaceViewModel : ViewModel() {
@@ -34,7 +34,6 @@ class PlaceViewModel : ViewModel() {
         newList.add(place)
         repository.postPlaces(newList)
     }
-
 
 }
 

@@ -26,7 +26,6 @@ class CalendarFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_calendar, container, false)
 
-
         calendarView = view.findViewById(R.id.calendarView)
         txtEvent = view.findViewById(R.id.txt_Event)
 
@@ -34,13 +33,10 @@ class CalendarFragment : Fragment() {
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             val selectedDate = formatDate(year, month, dayOfMonth)
 
-
             val calendar = Calendar.getInstance()
             calendar.set(year, month, dayOfMonth)
             val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
-
             if (dayOfWeek == Calendar.SUNDAY) {
-
                 txtEvent.text = "편의점 알바"
             } else {
 
