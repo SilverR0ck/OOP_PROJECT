@@ -13,7 +13,8 @@ import android.widget.CheckBox
 import android.widget.EditText
 import androidx.fragment.app.viewModels
 import com.google.firebase.database.FirebaseDatabase
-
+import android.text.TextUtils
+import android.widget.Toast
 
 class AddworkFragment : Fragment() {
 
@@ -53,6 +54,69 @@ class AddworkFragment : Fragment() {
 
             // 등록 버튼 클릭 시 Place 객체 생성하고, viewModel을 통해 데이터 추가
             register_Button.setOnClickListener {
+                var isValid = true
+                var errorMessage = StringBuilder()
+
+                if (wageday_EditText.text.toString().isEmpty() || !TextUtils.isDigitsOnly(wageday_EditText.text.toString())) {
+                    wageday_EditText.error = "월급일은 숫자로 입력해주세요."
+                    isValid = false
+                }
+
+                if (hourlyrate_EditText.text.toString().isEmpty() || !TextUtils.isDigitsOnly(hourlyrate_EditText.text.toString())) {
+                    hourlyrate_EditText.error = "시급은 숫자로 입력해주세요."
+                    isValid = false
+                }
+
+                if (workstarttime_EditText.text.toString().isEmpty() || !TextUtils.isDigitsOnly(workstarttime_EditText.text.toString())) {
+                    workstarttime_EditText.error = "근무 시작시간은 숫자로 입력해주세요."
+                    isValid = false
+                }
+
+                if (workendtime_EditText.text.toString().isEmpty() || !TextUtils.isDigitsOnly(workendtime_EditText.text.toString())) {
+                    workendtime_EditText.error = "근무 종료시간은 숫자로 입력해주세요."
+                    isValid = false
+                }
+
+                val start = workstarttime_EditText.text.toString().toIntOrNull()
+                val end = workendtime_EditText.text.toString().toIntOrNull()
+
+                if (restSelectionButton.text == "주휴수당 선택") {
+                    errorMessage.append("주휴수당을 선택해주세요.\n")
+                    isValid = false
+                }
+
+                if (taxSelectionButton.text == "세금 선택") {
+                    errorMessage.append("세금을 선택해주세요.\n")
+                    isValid = false
+                }
+
+                if (checkBoxes.none { it.isChecked }) {
+                    errorMessage.append("요일을 하나 이상 선택해주세요.\n")
+                    isValid = false
+                }
+
+                if (start == null || end == null || start !in 0..24 || end !in 0..24) {
+                    errorMessage.append("근무 시간은 0~24시간 형식으로 입력해주세요.")
+                    isValid = false
+                }
+
+                if (start != null && end != null && end <= start) {
+                    errorMessage.append("근무 종료 시간은 근무 시작 시간보다 커야 합니다.")
+                    isValid = false
+                }
+
+
+                if (!isValid) {
+                    AlertDialog.Builder(context).apply {
+                        setTitle("입력 오류")
+                        setMessage(errorMessage.toString())
+                        setPositiveButton("확인", null)
+                        create()
+                        show()
+                    }
+                    return@setOnClickListener
+                }
+
                 val place = createPlace(
                     work_placenameEditText,
                     wageday_EditText,
@@ -65,6 +129,9 @@ class AddworkFragment : Fragment() {
                 )
                 viewModel.addPlace(place)
             }
+
+
+
         }
     }
 
@@ -145,3 +212,4 @@ class AddworkFragment : Fragment() {
         return (monthlySalary + restAmount - taxAmount).toInt()
     }
 }
+

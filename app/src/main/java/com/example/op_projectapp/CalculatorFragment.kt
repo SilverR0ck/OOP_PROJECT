@@ -54,35 +54,80 @@ class CalculatorFragment : Fragment() {
 
             calculateSalaryButton.setOnClickListener {
                 resultText.text = ""
+
                 val wage = hourlyWage.text.toString().toDoubleOrNull()
                 val hours = dailyHours.text.toString().toDoubleOrNull()
                 val days = weeklyDays.text.toString().toDoubleOrNull()
 
-                if (wage != null && hours != null && days != null) {
-                    val rest: Double
-                    val tax: Double
+                var isValid = true
+                var errorMessage = StringBuilder()
 
-                    when (restSelectionButton.text) {
-                        "주휴수당 포함" -> {
-                            rest = if (hours * days >= 15) hours.coerceAtMost(8.0) * days.coerceAtMost(5.0) * wage else 0.0
-                        }
-                        else -> rest = 0.0
-                    }
-
-                    when (taxSelectionButton.text) {
-                        "4대보험 적용 (9.32%)" -> tax = 0.0932
-                        "소득세 적용 (3.3%)" -> tax = 0.033
-                        else -> tax = 0.0
-                    }
-
-                    val monthlySalary = wage * hours * days * 4
-                    val taxAmount = (monthlySalary + rest) * tax
-                    val takeHomePay = monthlySalary + rest - taxAmount
-
-                    resultText.text = "예상 급여: $monthlySalary 원\n" + "예상 주휴 수당: $rest 원\n" + "예상 세금: $taxAmount 원\n" + "예상 수령 금액: $takeHomePay 원\n"
+                if (wage == null) {
+                    hourlyWage.error = "숫자를 입력해주세요."
+                    isValid = false
                 }
-            }
 
+                if (hours == null) {
+                    dailyHours.error = "숫자를 입력해주세요."
+                    isValid = false
+                }
+
+                if (days == null) {
+                    weeklyDays.error = "숫자를 입력해주세요."
+                    isValid = false
+                }
+
+                if (restSelectionButton.text == "주휴수당 선택") {
+                    errorMessage.append("주휴수당을 선택해주세요.\n")
+                    isValid = false
+                }
+
+                if (taxSelectionButton.text == "세금 선택") {
+                    errorMessage.append("세금을 선택해주세요.")
+                    isValid = false
+                }
+
+                if (!isValid) {
+                    AlertDialog.Builder(context).apply {
+                        setTitle("입력 오류")
+                        setMessage(errorMessage.toString())
+                        setPositiveButton("확인", null)
+                        create()
+                        show()
+                    }
+                    return@setOnClickListener
+                }
+
+                val wageNonNull = wage!!
+                val hoursNonNull = hours!!
+                val daysNonNull = days!!
+
+                val rest: Double
+                val tax: Double
+
+                when (restSelectionButton.text) {
+                    "주휴수당 포함" -> {
+                        rest = if (hoursNonNull * daysNonNull >= 15) hoursNonNull.coerceAtMost(8.0) * daysNonNull.coerceAtMost(5.0) * wageNonNull else 0.0
+                    }
+                    else -> rest = 0.0
+                }
+
+                when (taxSelectionButton.text) {
+                    "4대보험 적용 (9.32%)" -> tax = 0.0932
+                    "소득세 적용 (3.3%)" -> tax = 0.033
+                    else -> tax = 0.0
+                }
+
+                val monthlySalary = wageNonNull * hoursNonNull * daysNonNull * 4
+                val taxAmount = (monthlySalary + rest) * tax
+                val takeHomePay = monthlySalary + rest - taxAmount
+
+                resultText.text = "예상 급여: $monthlySalary 원\n" +
+                        "예상 주휴 수당: $rest 원\n" +
+                        "예상 세금: $taxAmount 원\n" +
+                        "예상 수령 금액: $takeHomePay 원\n"
+
+            }
 
             return view
     }

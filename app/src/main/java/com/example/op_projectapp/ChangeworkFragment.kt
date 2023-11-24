@@ -3,6 +3,7 @@ package com.example.op_projectapp
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -97,9 +98,7 @@ class ChangeworkFragment : Fragment() {
             val newRestSelectionButton = view.findViewById<Button>(R.id.restSelectionButton)
             val newTaxSelectionButton = view.findViewById<Button>(R.id.taxSelectionButton)
 
-            view.findViewById<CheckBox>(R.id.sunday).isChecked = dayCalendarCheck[6] != 0
-
-        // '수정' 버튼 클릭 이벤트
+            // '수정' 버튼 클릭 이벤트
             val newDayCalendarCheck = listOf<Int>(
                 if (view.findViewById<CheckBox>(R.id.monday).isChecked) 1 else 0,
                 if (view.findViewById<CheckBox>(R.id.tuesday).isChecked) 1 else 0,
@@ -109,6 +108,72 @@ class ChangeworkFragment : Fragment() {
                 if (view.findViewById<CheckBox>(R.id.saturday).isChecked) 1 else 0,
                 if (view.findViewById<CheckBox>(R.id.sunday).isChecked) 1 else 0,
             )
+
+            view.findViewById<CheckBox>(R.id.sunday).isChecked = dayCalendarCheck[6] != 0
+
+            var isValid = true
+            var errorMessage = StringBuilder()
+
+            if (newWageday.isEmpty() || !TextUtils.isDigitsOnly(newWageday)) {
+                view.findViewById<EditText>(R.id.wageday).error = "월급일은 숫자로 입력해주세요."
+                isValid = false
+            }
+
+            if (newHourlyrate.isEmpty() || !TextUtils.isDigitsOnly(newHourlyrate)) {
+                view.findViewById<EditText>(R.id.hourlyrate).error = "시급은 숫자로 입력해주세요."
+                isValid = false
+            }
+
+            if (newWorkStartTime.isEmpty() || !TextUtils.isDigitsOnly(newWorkStartTime)) {
+                view.findViewById<EditText>(R.id.workstarttime).error = "근무 시작시간은 숫자로 입력해주세요."
+                isValid = false
+            }
+
+            if (newWorkEndTime.isEmpty() || !TextUtils.isDigitsOnly(newWorkEndTime)) {
+                view.findViewById<EditText>(R.id.workendtime).error = "근무 종료시간은 숫자로 입력해주세요."
+                isValid = false
+            }
+
+            val start = newWorkStartTime.toIntOrNull()
+            val end = newWorkEndTime.toIntOrNull()
+
+            if (newRestSelectionButton.text == "주휴수당 선택") {
+                errorMessage.append("주휴수당을 선택해주세요.\n")
+                isValid = false
+            }
+
+            if (newTaxSelectionButton.text == "세금 선택") {
+                errorMessage.append("세금을 선택해주세요.\n")
+                isValid = false
+            }
+
+            if (newDayCalendarCheck.none { it == 1 }) {
+                errorMessage.append("요일을 하나 이상 선택해주세요.\n")
+                isValid = false
+            }
+
+            if (start == null || end == null || start !in 0..24 || end !in 0..24) {
+                errorMessage.append("근무 시간은 0~24시간 형식으로 입력해주세요.")
+                isValid = false
+            }
+
+            if (start != null && end != null && end <= start) {
+                errorMessage.append("근무 종료 시간은 근무 시작 시간보다 커야 합니다.")
+                isValid = false
+            }
+
+            if (!isValid) {
+                AlertDialog.Builder(context).apply {
+                    setTitle("입력 오류")
+                    setMessage(errorMessage.toString())
+                    setPositiveButton("확인", null)
+                    create()
+                    show()
+                }
+                return@setOnClickListener
+            }
+
+
             val newDayCount = newDayCalendarCheck.filter { it == 1 }.size // 새로운 daycount 계산
             val newSalary = calculateSalary(
                 newHourlyrate.toInt(),
