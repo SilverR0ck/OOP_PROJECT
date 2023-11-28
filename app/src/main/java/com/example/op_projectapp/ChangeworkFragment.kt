@@ -8,14 +8,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.EditText
 import androidx.fragment.app.Fragment
+import com.example.op_projectapp.databinding.FragmentChangeworkBinding
 import com.example.op_projectapp.repository.PlaceRepository
-import com.google.firebase.database.FirebaseDatabase
 
+import java.lang.Math.abs
 class ChangeworkFragment : Fragment() {
+    private var _binding: FragmentChangeworkBinding? = null
+    private val binding get() = _binding!!
     private var name: String? = null
     private var hourlyrate: String? = null
     private var wageday: String? = null
@@ -25,7 +25,6 @@ class ChangeworkFragment : Fragment() {
     private var endtime: String? = null
 
     private val repository = PlaceRepository() // PlaceRepository 인스턴스 생성
-    val database = FirebaseDatabase.getInstance().reference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,103 +45,95 @@ class ChangeworkFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_changework, container, false)
-        val restSelectionButton = view.findViewById<Button>(R.id.restSelectionButton)
-        val taxSelectionButton = view.findViewById<Button>(R.id.taxSelectionButton)
-        val updateButton = view.findViewById<Button>(R.id.updateButton)
+        _binding = FragmentChangeworkBinding.inflate(inflater, container, false)
 
-        restSelectionButton.setOnClickListener {
+        binding.restSelectionButton.setOnClickListener {
             val restOptions = arrayOf("주휴수당 포함", "주휴수당 미포함")
             val builder = AlertDialog.Builder(it.context)
             builder.setTitle("주휴수당 선택")
             builder.setItems(restOptions) { dialog, which ->
-                restSelectionButton.text = restOptions[which]
+                binding.restSelectionButton.text = restOptions[which]
             }
             val dialog = builder.create()
             dialog.show()
         }
 
 
-        taxSelectionButton.setOnClickListener {
+        binding.taxSelectionButton.setOnClickListener {
             val taxOptions = arrayOf("세금 적용 안함", "4대보험 적용 (9.32%)", "소득세 적용 (3.3%)")
             val builder = AlertDialog.Builder(it.context)
             builder.setTitle("세금 선택")
             builder.setItems(taxOptions) { dialog, which ->
-                taxSelectionButton.text = taxOptions[which]
+                binding.taxSelectionButton.text = taxOptions[which]
             }
             val dialog = builder.create()
             dialog.show()
         }
 
-        view.findViewById<EditText>(R.id.workplacename).setText(name)
-        view.findViewById<EditText>(R.id.wageday).setText(wageday)
-        view.findViewById<EditText>(R.id.hourlyrate).setText(hourlyrate)
-        view.findViewById<EditText>(R.id.workstarttime).setText(starttime)
-        view.findViewById<EditText>(R.id.workendtime).setText(endtime)
+        binding.workplacename.setText(name)
+        binding.wageday.setText(wageday)
+        binding.hourlyrate.setText(hourlyrate)
+        binding.workstarttime.setText(starttime)
+        binding.workendtime.setText(endtime)
 
-        view.findViewById<CheckBox>(R.id.monday).isChecked = dayCalendarCheck[0] != 0
-        view.findViewById<CheckBox>(R.id.tuesday).isChecked = dayCalendarCheck[1] != 0
-        view.findViewById<CheckBox>(R.id.wednesday).isChecked = dayCalendarCheck[2] != 0
-        view.findViewById<CheckBox>(R.id.thursday).isChecked = dayCalendarCheck[3] != 0
-        view.findViewById<CheckBox>(R.id.friday).isChecked = dayCalendarCheck[4] != 0
-        view.findViewById<CheckBox>(R.id.saturday).isChecked = dayCalendarCheck[5] != 0
-        updateButton.setOnClickListener {
-            // val newKey = database.push().key
-            val newName = view.findViewById<EditText>(R.id.workplacename).text.toString()
-            val newWageday = view.findViewById<EditText>(R.id.wageday).text.toString()
-            val newStarttime = view.findViewById<EditText>(R.id.workstarttime).text.toString()
-            val newEndtime = view.findViewById<EditText>(R.id.workendtime).text.toString()
-            val newHourlyrate = view.findViewById<EditText>(R.id.hourlyrate).text.toString()
-            val newWorkStartTime = view.findViewById<EditText>(R.id.workstarttime).text.toString()
-            val newWorkEndTime = view.findViewById<EditText>(R.id.workendtime).text.toString()
-            val newRestSelectionButton = view.findViewById<Button>(R.id.restSelectionButton)
-            val newTaxSelectionButton = view.findViewById<Button>(R.id.taxSelectionButton)
+        binding.monday.isChecked = dayCalendarCheck[0] != 0
+        binding.tuesday.isChecked = dayCalendarCheck[1] != 0
+        binding.wednesday.isChecked = dayCalendarCheck[2] != 0
+        binding.thursday.isChecked = dayCalendarCheck[3] != 0
+        binding.friday.isChecked = dayCalendarCheck[4] != 0
+        binding.saturday.isChecked = dayCalendarCheck[5] != 0
+        binding.sunday.isChecked = dayCalendarCheck[6] != 0
+        binding.updateButton.setOnClickListener {
+            val newName = binding.workplacename.text.toString()
+            val newWageday = binding.wageday.text.toString()
+            val newHourlyrate = binding.hourlyrate.text.toString()
+            val newWorkStartTime = binding.workstarttime.text.toString().toInt()
+            var newWorkEndTime = binding.workendtime.text.toString().toInt()
 
             // '수정' 버튼 클릭 이벤트
             val newDayCalendarCheck = listOf<Int>(
-                if (view.findViewById<CheckBox>(R.id.monday).isChecked) 1 else 0,
-                if (view.findViewById<CheckBox>(R.id.tuesday).isChecked) 1 else 0,
-                if (view.findViewById<CheckBox>(R.id.wednesday).isChecked) 1 else 0,
-                if (view.findViewById<CheckBox>(R.id.thursday).isChecked) 1 else 0,
-                if (view.findViewById<CheckBox>(R.id.friday).isChecked) 1 else 0,
-                if (view.findViewById<CheckBox>(R.id.saturday).isChecked) 1 else 0,
-                if (view.findViewById<CheckBox>(R.id.sunday).isChecked) 1 else 0,
+                if (binding.monday.isChecked) 1 else 0,
+                if (binding.tuesday.isChecked) 1 else 0,
+                if (binding.wednesday.isChecked) 1 else 0,
+                if (binding.thursday.isChecked) 1 else 0,
+                if (binding.friday.isChecked) 1 else 0,
+                if (binding.saturday.isChecked) 1 else 0,
+                if (binding.sunday.isChecked) 1 else 0,
             )
 
-            view.findViewById<CheckBox>(R.id.sunday).isChecked = dayCalendarCheck[6] != 0
 
             var isValid = true
             var errorMessage = StringBuilder()
 
             if (newWageday.isEmpty() || !TextUtils.isDigitsOnly(newWageday)) {
-                view.findViewById<EditText>(R.id.wageday).error = "월급일은 숫자로 입력해주세요."
+                binding.wageday.error = "월급일은 숫자로 입력해주세요."
                 isValid = false
             }
 
             if (newHourlyrate.isEmpty() || !TextUtils.isDigitsOnly(newHourlyrate)) {
-                view.findViewById<EditText>(R.id.hourlyrate).error = "시급은 숫자로 입력해주세요."
+                binding.hourlyrate.error = "시급은 숫자로 입력해주세요."
                 isValid = false
             }
 
-            if (newWorkStartTime.isEmpty() || !TextUtils.isDigitsOnly(newWorkStartTime)) {
-                view.findViewById<EditText>(R.id.workstarttime).error = "근무 시작시간은 숫자로 입력해주세요."
+            if (newWorkStartTime.toString().isEmpty() || !TextUtils.isDigitsOnly(newWorkStartTime.toString())) {
+                binding.workstarttime.error = "근무 시작시간은 숫자로 입력해주세요."
                 isValid = false
             }
 
-            if (newWorkEndTime.isEmpty() || !TextUtils.isDigitsOnly(newWorkEndTime)) {
-                view.findViewById<EditText>(R.id.workendtime).error = "근무 종료시간은 숫자로 입력해주세요."
+            if (newWorkEndTime.toString().isEmpty() || !TextUtils.isDigitsOnly(newWorkEndTime.toString())) {
+                binding.workendtime.error = "근무 종료시간은 숫자로 입력해주세요."
                 isValid = false
             }
 
-            val start = newWorkStartTime.toIntOrNull()
-            val end = newWorkEndTime.toIntOrNull()
+            val start = newWorkStartTime.toString().toIntOrNull()
+            val end = newWorkEndTime.toString().toIntOrNull()
 
-            if (newRestSelectionButton.text == "주휴수당 선택") {
+            if (binding.restSelectionButton.text == "주휴수당 선택") {
                 errorMessage.append("주휴수당을 선택해주세요.\n")
                 isValid = false
             }
 
-            if (newTaxSelectionButton.text == "세금 선택") {
+            if (binding.taxSelectionButton.text == "세금 선택") {
                 errorMessage.append("세금을 선택해주세요.\n")
                 isValid = false
             }
@@ -157,11 +148,6 @@ class ChangeworkFragment : Fragment() {
                 isValid = false
             }
 
-            if (start != null && end != null && end <= start) {
-                errorMessage.append("근무 종료 시간은 근무 시작 시간보다 커야 합니다.")
-                isValid = false
-            }
-
             if (!isValid) {
                 AlertDialog.Builder(context).apply {
                     setTitle("입력 오류")
@@ -173,14 +159,20 @@ class ChangeworkFragment : Fragment() {
                 return@setOnClickListener
             }
 
-
             val newDayCount = newDayCalendarCheck.filter { it == 1 }.size // 새로운 daycount 계산
-            val newSalary = calculateSalary(
-                newHourlyrate.toInt(),
-                newWorkEndTime.toInt() - newWorkStartTime.toInt(),
+            val newHours = if (newWorkStartTime > newWorkEndTime) {
+                abs(newWorkStartTime - (newWorkEndTime + 24))
+            } else {
+                newWorkEndTime - newWorkStartTime
+            }
+            val newRest = binding.restSelectionButton.text.toString()
+            val newTax = binding.taxSelectionButton.text.toString()
+            val newSalary = SalaryCalculator.calculateSalary(
+                newHourlyrate,
+                newHours,
                 newDayCount,
-                newRestSelectionButton.text.toString(),
-                newTaxSelectionButton.text.toString()
+                newRest,
+                newTax
             )
 
             // 기존 노드 삭제
@@ -190,11 +182,10 @@ class ChangeworkFragment : Fragment() {
             // 새 노드 생성
             repository.updatePlace(
                 Place(
-                    //key = newKey.toString(),
                     name = newName,
                     wageday = newWageday,
-                    starttime = newStarttime,
-                    endtime = newEndtime,
+                    starttime = newWorkStartTime.toString(),
+                    endtime = newWorkEndTime.toString(),
                     dayCalendarCheck = newDayCalendarCheck,
                     daycount = newDayCount,
                     hourlyrate = newHourlyrate,
@@ -202,20 +193,11 @@ class ChangeworkFragment : Fragment() {
                 )
             )
         }
-        return view
+        return binding.root
     }
 
-    private fun calculateSalary(wage: Int, hours: Int, days: Int, rest: String, tax: String): Int {
-        val monthlySalary = wage * hours * days * 4
-        val restAmount = if (rest == "주휴수당 포함" && hours * days >= 15) {
-            (hours.coerceAtMost(8) * days.coerceAtMost(5) * wage).toDouble()
-        } else 0.0
-        val taxRate = when (tax) {
-            "4대보험 적용 (9.32%)" -> 0.0932
-            "소득세 적용 (3.3%)" -> 0.033
-            else -> 0.0
-        }
-        val taxAmount = (monthlySalary + restAmount) * taxRate
-        return (monthlySalary + restAmount - taxAmount).toInt()
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
