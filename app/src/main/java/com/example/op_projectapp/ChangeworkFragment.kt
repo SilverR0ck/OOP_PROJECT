@@ -17,6 +17,8 @@ class ChangeworkFragment : Fragment() {
     private var _binding: FragmentChangeworkBinding? = null
     private val binding get() = _binding!!
     private var name: String? = null
+    private var workstartmonth: String? = null
+    private var workstartday: String? = null
     private var hourlyrate: String? = null
     private var wageday: String? = null
     private var daycount: Int? = null
@@ -30,6 +32,8 @@ class ChangeworkFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             name = it.getString("name")
+            workstartmonth = it.getString("workstartmonth")
+            workstartday = it.getString("workstartday")
             wageday = it.getString("wageday")
             daycount = it.getInt("daycount")
             dayCalendarCheck = it.getIntArray("dayCalendarCheck")?.toList() ?: mutableListOf()
@@ -71,6 +75,8 @@ class ChangeworkFragment : Fragment() {
         }
 
         binding.workplacename.setText(name)
+        binding.workstartmonth.setText(workstartmonth)
+        binding.workstartday.setText(workstartday)
         binding.wageday.setText(wageday)
         binding.hourlyrate.setText(hourlyrate)
         binding.workstarttime.setText(starttime)
@@ -85,6 +91,8 @@ class ChangeworkFragment : Fragment() {
         binding.sunday.isChecked = dayCalendarCheck[6] != 0
         binding.updateButton.setOnClickListener {
             val newName = binding.workplacename.text.toString()
+            val newWorkStartMonth = binding.workstartmonth.text.toString()
+            val newWorkStartDay = binding.workstartday.text.toString()
             val newWageday = binding.wageday.text.toString()
             val newHourlyrate = binding.hourlyrate.text.toString()
             val newWorkStartTime = binding.workstarttime.text.toString().toInt()
@@ -104,6 +112,16 @@ class ChangeworkFragment : Fragment() {
 
             var isValid = true
             var errorMessage = StringBuilder()
+
+            if (newWorkStartMonth.isEmpty() || !TextUtils.isDigitsOnly(newWorkStartMonth)) {
+                binding.workstartmonth.error = "월급일은 숫자로 입력해주세요."
+                isValid = false
+            }
+
+            if (newWorkStartDay.isEmpty() || !TextUtils.isDigitsOnly(newWorkStartDay)) {
+                binding.workstartday.error = "월급일은 숫자로 입력해주세요."
+                isValid = false
+            }
 
             if (newWageday.isEmpty() || !TextUtils.isDigitsOnly(newWageday)) {
                 binding.wageday.error = "월급일은 숫자로 입력해주세요."
@@ -125,8 +143,11 @@ class ChangeworkFragment : Fragment() {
                 isValid = false
             }
 
-            val start = newWorkStartTime.toString().toIntOrNull()
-            val end = newWorkEndTime.toString().toIntOrNull()
+            // 근무 월일 및 출퇴근시간 널이 아니라면, 근무달은 1~12월까지, 근무일은 1~31일까지 입력가능, 출퇴근시간은 0~24시간까지 입력가능 범위 설정
+            val startmonth = newWorkStartMonth.toIntOrNull()
+            val startday = newWorkStartDay.toIntOrNull()
+            val starttime = newWorkStartTime.toString().toIntOrNull()
+            val endtime = newWorkEndTime.toString().toIntOrNull()
 
             if (binding.restSelectionButton.text == "주휴수당 선택") {
                 errorMessage.append("주휴수당을 선택해주세요.\n")
@@ -143,7 +164,12 @@ class ChangeworkFragment : Fragment() {
                 isValid = false
             }
 
-            if (start == null || end == null || start !in 0..24 || end !in 0..24) {
+            if (starttime == null || endtime == null || starttime !in 0..24 || endtime !in 0..24) {
+                errorMessage.append("근무 시간은 0~24시간 형식으로 입력해주세요.")
+                isValid = false
+            }
+
+            if (startmonth == null || startday == null || startmonth !in 1..12 || startday !in 1..31) {
                 errorMessage.append("근무 시간은 0~24시간 형식으로 입력해주세요.")
                 isValid = false
             }
@@ -179,10 +205,14 @@ class ChangeworkFragment : Fragment() {
 
             name?.let { repository.deletePlace(it) }
 
+
+
             // 새 노드 생성
             repository.updatePlace(
                 Place(
                     name = newName,
+                    workstartmonth = newWorkStartMonth,
+                    workstartday = newWorkStartDay,
                     wageday = newWageday,
                     starttime = newWorkStartTime.toString(),
                     endtime = newWorkEndTime.toString(),
