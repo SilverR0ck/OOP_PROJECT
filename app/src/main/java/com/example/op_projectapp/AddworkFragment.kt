@@ -203,6 +203,7 @@ class AddworkFragment : Fragment() {
             taxButton.text.toString()
         )
         // 생성된 데이터를 바탕으로 Place 객체를 생성해서 반환
+
         return Place(
             name = workPlaceName,
             workstartmonth = workStartMonth,

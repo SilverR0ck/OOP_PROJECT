@@ -205,6 +205,8 @@ class ChangeworkFragment : Fragment() {
 
             name?.let { repository.deletePlace(it) }
 
+
+
             // 새 노드 생성
             repository.updatePlace(
                 Place(
