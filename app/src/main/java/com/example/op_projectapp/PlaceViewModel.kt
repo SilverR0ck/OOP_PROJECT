@@ -15,7 +15,7 @@ data class Place(
     val wageday: String? = null,
     val starttime: String? = null,
     val endtime: String? = null,
-    val salary: Int? = null,
+    val salary: List<Int>? = MutableList(12) { 0 },
     val daycount: Int? = null,
     val hourlyrate: String? = null,
     val dayCalendarCheck: List<Int> ?= mutableListOf(),

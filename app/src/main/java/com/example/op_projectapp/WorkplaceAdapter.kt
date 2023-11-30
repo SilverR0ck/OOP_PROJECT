@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.op_projectapp.databinding.ListPlaceBinding
+import java.util.Calendar
 
 
 // 어댑터파일은 주로 데이터와 사용자 인터페이스를 연결하는 역할
@@ -24,11 +25,12 @@ class WorkplaceAdapter(private val placeList: LiveData<List<Place>>) : RecyclerV
     // viewHolder 객체를 데이터와 연결하는 메서드
     override fun onBindViewHolder(holder: WorkplaceViewHolder, position: Int) {
         // posistion에 해당하는 Place 객체를 가져옴
+        val currentMonth = Calendar.getInstance().get(Calendar.MONTH)
         val place = placeList.value?.get(position)
         // Place 객체의 각 속성을 ViewHolder의 뷰에 설정
         holder.binding.txtName.text = place?.name
         holder.binding.txtWageday.text = place?.wageday
-        holder.binding.txtSalary.text = place?.salary.toString()
+        holder.binding.txtSalary.text = place?.salary?.get(currentMonth)?.toString()
         holder.binding.txtDaycount.text = place?.daycount.toString()
 
         // 수정버튼 클릭 이벤트, Place 객체의 속성을 번들에 담아 ChangeworkFragment로 네비게이션
@@ -39,7 +41,7 @@ class WorkplaceAdapter(private val placeList: LiveData<List<Place>>) : RecyclerV
             bundle.putString("workstartday", place?.workstartday)
             bundle.putString("wageday", place?.wageday)
             bundle.putString("hourlyrate", place?.hourlyrate)
-            bundle.putInt("salary", place?.salary ?: 0)
+            bundle.putInt("salary", place?.salary?.get(currentMonth) ?: 0)
             bundle.putInt("daycount", place?.daycount ?: 0)
             bundle.putIntArray("dayCalendarCheck", place?.dayCalendarCheck?.toIntArray() ?: IntArray(7))
             bundle.putString("starttime", place?.starttime)

@@ -11,6 +11,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.op_projectapp.databinding.FragmentChangeworkBinding
 import com.example.op_projectapp.repository.PlaceRepository
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 
 import java.lang.Math.abs
 class ChangeworkFragment : Fragment() {
@@ -25,6 +28,8 @@ class ChangeworkFragment : Fragment() {
     private var dayCalendarCheck: List<Int> = mutableListOf()
     private var starttime: String? = null
     private var endtime: String? = null
+    private var salary: MutableList<Int>? = null
+
 
     private val repository = PlaceRepository() // PlaceRepository 인스턴스 생성
 
@@ -40,8 +45,17 @@ class ChangeworkFragment : Fragment() {
             starttime = it.getString("starttime")
             endtime = it.getString("endtime")
             hourlyrate = it.getString("hourlyrate").toString()
+            repository.WorkRef.child(name ?: "").addListenerForSingleValueEvent(object :
+                ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    salary = snapshot.getValue(Place::class.java)?.salary?.toMutableList()
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e("ChangeworkFragment", "Failed to load place", error.toException())
+                }
+            })
         }
-        Log.d("wageamountvaule", "Deleting place with key: $hourlyrate")
     }
 
 
@@ -193,14 +207,18 @@ class ChangeworkFragment : Fragment() {
             }
             val newRest = binding.restSelectionButton.text.toString()
             val newTax = binding.taxSelectionButton.text.toString()
-            val newSalary = SalaryCalculator.calculateSalary(
+            val newSalaryPerMonth = SalaryCalculator.calculateSalary(
                 newHourlyrate,
                 newHours,
                 newDayCount,
                 newRest,
                 newTax
             )
-
+            val newSalary = MutableList(12) { 0 } // 모든 월에 대해 기본 월급을 0으로 설정
+            val startMonthIndex = newWorkStartMonth.toInt() - 1
+            salary?.let {
+                it[startMonthIndex] = newSalaryPerMonth
+            }
             // 기존 노드 삭제
 
             name?.let { repository.deletePlace(it) }
@@ -219,7 +237,7 @@ class ChangeworkFragment : Fragment() {
                     dayCalendarCheck = newDayCalendarCheck,
                     daycount = newDayCount,
                     hourlyrate = newHourlyrate,
-                    salary = newSalary
+                    salary = salary ?: newSalary
                 )
             )
         }
