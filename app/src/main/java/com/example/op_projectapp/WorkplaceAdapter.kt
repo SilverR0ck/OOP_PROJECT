@@ -35,6 +35,8 @@ class WorkplaceAdapter(private val placeList: LiveData<List<Place>>) : RecyclerV
         holder.binding.btnChageWork.setOnClickListener {
             val bundle = Bundle()
             bundle.putString("name", place?.name)
+            bundle.putString("workstartmonth", place?.workstartmonth)
+            bundle.putString("workstartday", place?.workstartday)
             bundle.putString("wageday", place?.wageday)
             bundle.putString("hourlyrate", place?.hourlyrate)
             bundle.putInt("salary", place?.salary ?: 0)
@@ -49,3 +51,5 @@ class WorkplaceAdapter(private val placeList: LiveData<List<Place>>) : RecyclerV
     // 리사이클뷰에 표시할 항목의 개수를 반환하는 메서드
     override fun getItemCount() = placeList.value?.size ?: 0
 }
+
+//리사이클러뷰는 자체적으로 뷰 홀더의 재사용 메커니즘을 가지고 있어, 뷰홀더와 그에 연결된 바인딩 객체가 자동으로 메모리에서 해제됨
