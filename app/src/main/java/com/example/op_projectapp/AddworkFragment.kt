@@ -195,13 +195,16 @@ class AddworkFragment : Fragment() {
         } else {
             workEndTime - workStartTime
         }
-        val salary = SalaryCalculator.calculateSalary(
+        val salaryPerMonth = SalaryCalculator.calculateSalary(
             hourlyRate,
             Hours,
             dayCount,
             restButton.text.toString(),
             taxButton.text.toString()
         )
+        val salary = MutableList(12) { 0 } // 모든 월에 대해 기본 월급을 0으로 설정
+        val startMonthIndex = workStartMonth.toInt()-1
+        salary[startMonthIndex] = salaryPerMonth // workstartmonth-1에 해당하는 인덱스에 계산된 월급 할당
         // 생성된 데이터를 바탕으로 Place 객체를 생성해서 반환
 
         return Place(

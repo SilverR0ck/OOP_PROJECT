@@ -56,7 +56,6 @@ class PlaceRepository {
                     }
                 }
             }
-
             override fun onCancelled(error: DatabaseError) {
                 Log.e("PlaceRepository", "Failed to load places", error.toException()) //예외처리
             }
@@ -69,7 +68,6 @@ class PlaceRepository {
             WorkRef.child(place.name?:" ").setValue(place)
         }
     }
-
 
     // 특정 Place 객체를 삭제하는 함수, key값으로 노드의 이름을 받아와서 삭제 진행
     fun deletePlace(key: String) {
