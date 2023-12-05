@@ -1,57 +1,102 @@
 package com.example.op_projectapp
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.CalendarView
-import android.widget.EditText
-import android.widget.TextView
-import com.example.op_projectapp.databinding.ActivityMainBinding
-import java.text.SimpleDateFormat
-import java.util.*
-
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.op_projectapp.databinding.FragmentCalendarBinding
+import java.time.LocalDate
+import java.time.YearMonth
+import java.time.format.DateTimeFormatter
 
 class CalendarFragment : Fragment() {
-
-    private lateinit var calendarView: CalendarView
-    private lateinit var txtEvent: TextView
+    var binding: FragmentCalendarBinding? = null
+    private val viewModel : PlaceViewModel by viewModels()
+    private lateinit var checkedDate: LocalDate
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        binding= FragmentCalendarBinding.inflate(inflater)
 
-        val view = inflater.inflate(R.layout.fragment_calendar, container, false)
-
-        calendarView = view.findViewById(R.id.calendarView)
-        txtEvent = view.findViewById(R.id.txt_Event)
+        return binding?.root
+    }
 
 
-        calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
-            val selectedDate = formatDate(year, month, dayOfMonth)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-            val calendar = Calendar.getInstance()
-            calendar.set(year, month, dayOfMonth)
-            val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
-            if (dayOfWeek == Calendar.SUNDAY) {
-                txtEvent.text = "편의점 알바"
-            } else {
 
-                txtEvent.text = "일정이 없습니다"
-            }
+        checkedDate = LocalDate.now()
+
+        setMonth()
+
+        //다음달 달력 세팅
+        binding?.btnLastMonth?.setOnClickListener{
+            checkedDate=checkedDate.minusMonths(1)
+            setMonth()
         }
 
-        return view
+        //저번달 달력 세팅
+        binding?.btnNextMonth?.setOnClickListener{
+            checkedDate=checkedDate.plusMonths(1)
+            setMonth()
+        }
+
     }
+    private fun setMonth(){
+        binding?.txtMonthView?.text=formattedMonth(checkedDate)
+
+        val dateList= monthDayArray(checkedDate)
+
+        //layoutManager, adapter 설정
+        binding?.ryCalendar?.layoutManager=GridLayoutManager(requireContext(), 7)
+        binding?.ryEvents?.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+
+        val calendarAdapter=CalendarAdapter(dateList)
+        binding?.ryCalendar?.adapter=calendarAdapter
 
 
-    private fun formatDate(year: Int, month: Int, dayOfMonth: Int): String {
-        val calendar = Calendar.getInstance()
-        calendar.set(year, month, dayOfMonth)
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        return dateFormat.format(calendar.time)
+        val eventsAdapter = EventsAdapter(viewModel.nameplace)
+        binding?.ryEvents?.adapter=EventsAdapter(viewModel.nameplace)
+
+        viewModel.nameplace.observe(viewLifecycleOwner){
+            eventsAdapter.notifyDataSetChanged()
+        }
+
     }
+
+    private fun formattedMonth(date: LocalDate):String {
+        var formatter = DateTimeFormatter.ofPattern("MM월")
+        return date.format(formatter)
+    }
+
+    private fun monthDayArray(date: LocalDate): ArrayList<String>{
+        val dateList=ArrayList<String>()
+        val monthInfo= YearMonth.from(date)
+        val lastDayOfMonth=monthInfo.lengthOfMonth()
+        val firstDayOfMonth = checkedDate.withDayOfMonth(1)
+        val firstDayOfWeek = firstDayOfMonth.dayOfWeek.value
+
+        for(i in 1..41){
+            if(i <= firstDayOfWeek || i > (lastDayOfMonth + firstDayOfWeek)){
+                dateList.add("")
+            }else{
+                dateList.add((i - firstDayOfWeek).toString())
+            }
+        }
+        return dateList
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+    }
+
 }

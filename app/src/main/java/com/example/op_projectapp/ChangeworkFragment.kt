@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.op_projectapp.databinding.FragmentChangeworkBinding
 import com.example.op_projectapp.repository.PlaceRepository
 import com.google.firebase.database.DataSnapshot
@@ -64,6 +65,11 @@ class ChangeworkFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentChangeworkBinding.inflate(inflater, container, false)
+
+        binding.btnDel.setOnClickListener {
+            name?.let { repository.deletePlace(it) }
+            findNavController().navigate(R.id.action_changeworkFragment_to_homeFragment)
+        }
 
         binding.restSelectionButton.setOnClickListener {
             val restOptions = arrayOf("주휴수당 포함", "주휴수당 미포함")
@@ -240,6 +246,7 @@ class ChangeworkFragment : Fragment() {
                     salary = salary ?: newSalary
                 )
             )
+            findNavController().navigate(R.id.action_changeworkFragment_to_homeFragment)
         }
         return binding.root
     }

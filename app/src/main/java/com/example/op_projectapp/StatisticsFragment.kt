@@ -94,7 +94,7 @@ class StatisticsFragment : Fragment() {
 
     private fun setupSpinnerItemSelectedListener(places: List<Place>) {
         binding.placeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 updateBarChartData(places[position])
             }
 
@@ -103,6 +103,7 @@ class StatisticsFragment : Fragment() {
             }
         }
     }
+
 
     private fun calculateSalaries(place: Place): List<BarEntry> {
         val salaries = place.salary?.takeLast(5)?.toMutableList() ?: mutableListOf()

@@ -31,12 +31,20 @@
         android:id="@+id/addworkFragment"
         android:name="com.example.op_projectapp.AddworkFragment"
         android:label="근무지 추가"
-        tools:layout="@layout/fragment_addwork"/>
+        tools:layout="@layout/fragment_addwork">
+        <action
+            android:id="@+id/action_addworkFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/changeworkFragment"
         android:name="com.example.op_projectapp.ChangeworkFragment"
         android:label="근무지 수정"
-        tools:layout="@layout/fragment_changework" />
+        tools:layout="@layout/fragment_changework" >
+        <action
+            android:id="@+id/action_changeworkFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/calculatorFragment"
         android:name="com.example.op_projectapp.CalculatorFragment"

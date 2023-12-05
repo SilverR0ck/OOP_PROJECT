@@ -13,6 +13,8 @@ import android.widget.EditText
 import androidx.fragment.app.viewModels
 import com.google.firebase.database.FirebaseDatabase
 import android.text.TextUtils
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.op_projectapp.databinding.FragmentAddworkBinding
 import java.lang.Math.abs
 
@@ -136,6 +138,8 @@ class AddworkFragment : Fragment() {
                 binding.taxSelectionButton
             )
             viewModel.addPlace(place)
+
+            findNavController().navigate(R.id.action_addworkFragment_to_homeFragment)
         }
 
         return binding.root
