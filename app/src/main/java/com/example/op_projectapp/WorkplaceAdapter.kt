@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.op_projectapp.databinding.ListPlaceBinding
+import java.text.NumberFormat
 import java.util.Calendar
 
 
@@ -27,10 +28,12 @@ class WorkplaceAdapter(private val placeList: LiveData<List<Place>>) : RecyclerV
         // posistion에 해당하는 Place 객체를 가져옴
         val currentMonth = Calendar.getInstance().get(Calendar.MONTH)
         val place = placeList.value?.get(position)
+        val salary = place?.salary?.get(currentMonth)
+        val formattedSalary = NumberFormat.getNumberInstance().format(salary)
         // Place 객체의 각 속성을 ViewHolder의 뷰에 설정
         holder.binding.txtName.text = place?.name
         holder.binding.txtWageday.text = place?.wageday
-        holder.binding.txtSalary.text = place?.salary?.get(currentMonth)?.toString()
+        holder.binding.txtSalary.text = formattedSalary
         holder.binding.txtDaycount.text = place?.daycount.toString()
 
         // 수정버튼 클릭 이벤트, Place 객체의 속성을 번들에 담아 ChangeworkFragment로 네비게이션
