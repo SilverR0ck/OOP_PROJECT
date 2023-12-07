@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.op_projectapp.databinding.FragmentCalendarBinding
+import com.example.op_projectapp.viewModel.PlaceViewModel
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
@@ -63,10 +64,10 @@ class CalendarFragment : Fragment() {
         binding?.ryCalendar?.adapter=calendarAdapter
 
 
-        val eventsAdapter = EventsAdapter(viewModel.nameplace)
-        binding?.ryEvents?.adapter=EventsAdapter(viewModel.nameplace)
+        val eventsAdapter = EventsAdapter(viewModel.places)
+        binding?.ryEvents?.adapter=EventsAdapter(viewModel.places)
 
-        viewModel.nameplace.observe(viewLifecycleOwner){
+        viewModel.places.observe(viewLifecycleOwner){
             eventsAdapter.notifyDataSetChanged()
         }
 

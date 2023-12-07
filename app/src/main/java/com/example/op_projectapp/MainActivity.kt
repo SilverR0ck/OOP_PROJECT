@@ -22,8 +22,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
+        // 네비게이션컨드롤러를 다시 가져와서 뒤로가기 동작 처리
         val navController = binding.frgNav.getFragment<NavHostFragment>().navController
-
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
 

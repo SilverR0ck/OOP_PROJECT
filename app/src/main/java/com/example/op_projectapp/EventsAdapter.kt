@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
+import com.example.op_projectapp.Model.Place
 import com.example.op_projectapp.databinding.ItemEventsBinding
 
 class EventsAdapter (private val workList: LiveData<List<Place>>):
