@@ -10,7 +10,9 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.op_projectapp.Model.Place
 import com.example.op_projectapp.databinding.FragmentStatisticsBinding
+import com.example.op_projectapp.viewModel.PlaceViewModel
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
@@ -21,7 +23,8 @@ import java.util.Calendar
 class StatisticsFragment : Fragment() {
 
     private var _binding: FragmentStatisticsBinding? = null
-    private val binding get() = _binding!!
+    private val binding: FragmentStatisticsBinding
+        get() = _binding ?: throw IllegalStateException("바인딩이 초기화 되지 않음")
 
     private lateinit var placeViewModel: PlaceViewModel
 
@@ -29,18 +32,22 @@ class StatisticsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentStatisticsBinding.inflate(inflater, container, false)
+        _binding = FragmentStatisticsBinding.inflate(layoutInflater)
         placeViewModel = ViewModelProvider(this).get(PlaceViewModel::class.java)
 
+        // 바 차트 설정 초기화
         setupBarChart()
 
-        placeViewModel.nameplace.observe(viewLifecycleOwner, { places ->
+        // ViewModel에서 관찰 중인 데이터의 변화를 감지하고 새로운 데이터로 Spinner 및 Bar Chart를 업데이트
+        placeViewModel.places.observe(viewLifecycleOwner, { places ->
             places?.let {
+                // Spinner에 장소 이름들을 설정
                 setupSpinnerAdapter(it)
+
+                // Spinner의 선택 변경 리스너 설정
                 setupSpinnerItemSelectedListener(it)
             }
         })
-
         return binding.root
     }
 
@@ -49,6 +56,7 @@ class StatisticsFragment : Fragment() {
         _binding = null
     }
 
+    // 바 차트 설정 초기화 함수
     private fun setupBarChart() {
         val xAxis: XAxis = binding.statisticsBarChart.xAxis
         xAxis.position = XAxis.XAxisPosition.BOTTOM
@@ -66,6 +74,7 @@ class StatisticsFragment : Fragment() {
         yAxisRight.isEnabled = false // 오른쪽 Y축 비활성화
     }
 
+    // 최근 5개월의 월 이름을 반환하는 함수
     private fun getMonths(): ArrayList<String> {
         val now = Calendar.getInstance()
         return arrayListOf(
@@ -85,6 +94,7 @@ class StatisticsFragment : Fragment() {
         return "$month 월"
     }
 
+    // Spinner 어댑터 설정 함수
     private fun setupSpinnerAdapter(places: List<Place>) {
         val placeNames = places.map { it.name ?: "" }
         val arrayAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, placeNames)
@@ -92,9 +102,11 @@ class StatisticsFragment : Fragment() {
         binding.placeSpinner.adapter = arrayAdapter
     }
 
+    // Spinner 선택 리스너 설정 함수
     private fun setupSpinnerItemSelectedListener(places: List<Place>) {
         binding.placeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                // 선택된 장소에 대한 데이터로 Bar Chart를 업데이트
                 updateBarChartData(places[position])
             }
 
@@ -104,7 +116,7 @@ class StatisticsFragment : Fragment() {
         }
     }
 
-
+    // 선택된 장소의 최근 5개월 간 소득 데이터를 계산하는 함수
     private fun calculateSalaries(place: Place): List<BarEntry> {
         val salaries = place.salary?.takeLast(5)?.toMutableList() ?: mutableListOf()
         while (salaries.size < 5) {
@@ -115,7 +127,7 @@ class StatisticsFragment : Fragment() {
         }
     }
 
-
+    // 선택된 장소의 BarDataSet을 생성하는 함수
     private fun createDataSet(place: Place): BarDataSet {
         val entries = calculateSalaries(place)
         return BarDataSet(entries, "${place.name} 최근 5개월 간 소득 추이").apply {
@@ -124,6 +136,7 @@ class StatisticsFragment : Fragment() {
         }
     }
 
+    // Bar Chart 데이터를 업데이트하는 함수
     private fun updateBarChartData(place: Place) {
         val dataSet = createDataSet(place)
         val barData = BarData(dataSet)
